@@ -13,15 +13,19 @@ class TestFilterNestedHash < Minitest::Test
     end
 
     def test_remove_hash_contain_privacy
-        assert_equal @nested_hash.hash_filter(@nested_hash.base_node, "rolea"), Oj.load(json_remove_privacy)
+        assert_equal @nested_hash.hash_filter(@nested_hash.base_node, ["rolea"]), Oj.load(json_remove_privacy)
     end
 
     def test_remove_hash_contain_privacy_right
-      assert_equal @nested_hash.hash_filter(Oj.load(json_privacy_with_roleb), "roleb"), Oj.load(json_privacy_with_roleb)
+      assert_equal @nested_hash.hash_filter(Oj.load(json_privacy_with_roleb), ["roleb"]), Oj.load(json_privacy_with_roleb)
     end
 
     def test_remove_hash_contain_privacy_not_right
-      assert_equal @nested_hash.hash_filter(Oj.load(json_privacy_with_roleb), "rolec"), Oj.load(json_remove_privacy)
+      assert_equal @nested_hash.hash_filter(Oj.load(json_privacy_with_roleb), ["rolec"]), Oj.load(json_remove_privacy)
+    end
+
+    def test_remove_hash_contain_privacy_big_file
+      assert_equal @nested_hash.hash_filter(Oj.load(json_big_file), ["roleb"]), Oj.load(json_big_file)
     end
 
     private
@@ -40,5 +44,9 @@ class TestFilterNestedHash < Minitest::Test
 
     def json_privacy_with_roleb
         File.read('./fixtures/json_privacy_with_right_roleb.json')
+    end
+
+    def json_big_file
+        File.read('./fixtures/json_big_file.json')
     end
 end

@@ -13,7 +13,7 @@ class FilterNestedHash
   def hash_filter(hash, role)
     hash.each do |k, v|
       if k == "privacy" && v.is_a?(Array) && !v.empty?
-        if v.include?(role)
+        if role.any? { |e| v.to_set.include?(e)}
           return hash
         else
           return nil
@@ -21,8 +21,9 @@ class FilterNestedHash
       elsif k == "children" && v.is_a?(Array) && !v.empty?
         tmp = []
         v.each do |e|
-          unless hash_filter(e,role).nil?
-            tmp.push(hash_filter(e, role))
+          tmp_filter = hash_filter(e, role)
+          unless tmp_filter.nil?
+            tmp.push(tmp_filter)
           end
         end
         hash["children"] = tmp
