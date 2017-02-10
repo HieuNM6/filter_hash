@@ -82,8 +82,7 @@
                 }
               ],
               "privacy": [
-                "role a",
-                "role b"
+                "role a"
               ]
             }
           ]
